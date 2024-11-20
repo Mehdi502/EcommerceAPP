@@ -1,0 +1,8 @@
+{
+  "products": [
+    { "id": 1, "name": "Télévision 4K", "price": 599, "quantity": 5 },
+    { "id": 2, "name": "Casque Bluetooth", "price": 129, "quantity": 10 },
+    { "id": 3, "name": "Smartphone", "price": 899, "quantity": 8 }
+  ],
+  "cart": []
+}

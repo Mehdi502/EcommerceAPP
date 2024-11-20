@@ -1,0 +1,28 @@
+<div class="cart">
+  <h1>Mon Panier</h1>
+
+  <!-- Affiche un message si le panier est vide -->
+  <div *ngIf="cartItems.length === 0">
+    <p>Votre panier est vide.</p>
+  </div>
+
+  <!-- Liste les articles du panier -->
+  <div *ngIf="cartItems.length > 0">
+    <div *ngFor="let item of cartItems" class="cart-item">
+      <img [src]="item.image" alt="{{ item.name }}" class="product-image" />
+      <h2>{{ item.name }}</h2>
+      <p>Prix unitaire : {{ item.price }} €</p>
+      <p>Quantité : 
+        <button (click)="decreaseQuantity(item)">-</button>
+        {{ item.quantity }}
+        <button (click)="increaseQuantity(item)">+</button>
+      </p>
+      <p>Sous-total : {{ item.price * item.quantity }} €</p>
+    </div>
+
+    <!-- Affiche le total -->
+    <div class="cart-total">
+      <h3>Total : {{ getTotalPrice() }} €</h3>
+    </div>
+  </div>
+</div>
