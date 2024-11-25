@@ -1,1 +1,21 @@
-<p>order-history-component works!</p>
+<!-- order-history.component.html -->
+
+<div class="order-history">
+  <h1>Historique des Commandes</h1>
+
+  <div *ngIf="orders.length > 0; else noOrders">
+    <div class="order" *ngFor="let order of orders">
+      <h3>Commande effectuée le : {{ order.date }}</h3>
+      <ul>
+        <li *ngFor="let item of order.items">
+          <strong>{{ item.name }}</strong> - {{ item.quantity }} x {{ item.price }} €
+        </li>
+      </ul>
+      <h3>Total : {{ order.totalPrice }} €</h3>
+    </div>
+  </div>
+
+  <ng-template #noOrders>
+    <p>Aucune commande trouvée.</p>
+  </ng-template>
+</div>

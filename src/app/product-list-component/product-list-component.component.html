@@ -1,5 +1,13 @@
+<div class="search-bar">
+  <input
+    type="text"
+    (input)="onSearch($event)"
+    placeholder="Rechercher un produit"
+    class="search-input"
+  />
+</div>
+
 <div class="categories">
-  <h2>Catégories</h2>
   <button
     *ngFor="let category of ['Tous', 'Électronique', 'Accessoires']"
     (click)="filterProducts(category)">
@@ -8,11 +16,19 @@
 </div>
 
 <div class="products">
-  <h2>Produits</h2>
   <div class="product" *ngFor="let product of filteredProducts">
     <img [src]="product.image" alt="{{ product.name }}" class="product-image" />
     <h3>{{ product.name }}</h3>
     <p>Prix : {{ product.price }} €</p>
     <button (click)="addToCart(product)">Ajouter au panier</button>
   </div>
+</div>
+
+<!-- Bouton de déconnexion -->
+<div>
+  <button (click)="logout()">Se déconnecter</button>
+
+</div>
+<div>
+  <button (click)="navigateToOrderHistory()">Voir l'historique des commandes</button>
 </div>

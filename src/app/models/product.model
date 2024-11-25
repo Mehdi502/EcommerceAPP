@@ -1,0 +1,7 @@
+export interface Product {
+  id: number;        // Identifiant unique du produit
+  name: string;      // Nom du produit
+  price: number;     // Prix du produit
+  category: string;  // Catégorie du produit (par exemple, Électronique, Accessoires)
+  image: string;     // URL de l'image du produit
+}
