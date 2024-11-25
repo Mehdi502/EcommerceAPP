@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { CartServiceService } from '../cart-service.service';
+import { AuthService } from '../auth-service.service'; // Service d'authentification
+import { Product } from '../models/product.model';
 
 @Component({
   selector: 'app-product-list-component',
@@ -9,37 +12,42 @@ import { CartServiceService } from '../cart-service.service';
   templateUrl: './product-list-component.component.html',
   styleUrls: ['./product-list-component.component.css']
 })
-export class ProductListComponentComponent {
-  products = [
-    {
-      id: 1,
-      name: 'Télévision 4K',
-      price: 599,
-      category: 'Électronique',
-      image: 'https://th.bing.com/th/id/OIP.M2P2-Okx-s-SmREO200j0QHaEK?w=280&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7'
-    },
-    {
-      id: 2,
-      name: 'Casque Bluetooth',
-      price: 129,
-      category: 'Accessoires',
-      image: 'https://th.bing.com/th/id/OIP.jbT8Zub5PTRzjHC-4OcACgHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.5&pid=1.7'
-    },
-    {
-      id: 3,
-      name: 'Smartphone',
-      price: 899,
-      category: 'Électronique',
-      image: 'https://th.bing.com/th/id/OIP.OcdSqY5gftJvJieB7BYLpwHaHa?w=177&h=187&c=7&r=0&o=5&dpr=1.5&pid=1.7'
+export class ProductListComponentComponent implements OnInit {
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+
+  constructor(
+    private cartService: CartServiceService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
     }
-  ];
 
-  // Initialisation de la liste filtrée
-  filteredProducts = this.products;
+    this.cartService.getProducts().subscribe((data: Product[]) => {
+      this.products = data;
+      this.filteredProducts = data;
+    });
+  }
 
-  constructor(private cartService: CartServiceService) {}
+  // Méthode de déconnexion
+  logout(): void {
+    this.authService.logout();  // Appel de la méthode logout dans AuthService
+    this.router.navigate(['/login']);  // Redirection vers la page de connexion
+  }
 
-  // Méthode pour filtrer les produits par catégorie
+  onSearch(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const query = input?.value.trim().toLowerCase() || '';
+    this.filteredProducts = this.products.filter(product =>
+      product.name.toLowerCase().includes(query)
+    );
+  }
+
   filterProducts(category: string): void {
     if (category === 'Tous') {
       this.filteredProducts = this.products;
@@ -48,9 +56,13 @@ export class ProductListComponentComponent {
     }
   }
 
-  // Méthode pour ajouter un produit au panier
-  addToCart(product: any) {
-    this.cartService.addToCart(product);
-    alert(`${product.name} a été ajouté au panier !`);
+  addToCart(product: Product): void {
+    this.cartService.addToCart(product).subscribe(() => {
+      alert(`${product.name} a été ajouté au panier !`);
+    });
+  }
+
+  navigateToOrderHistory(): void {
+    this.router.navigate(['/order-history']);
   }
 }

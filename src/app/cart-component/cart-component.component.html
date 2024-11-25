@@ -1,28 +1,36 @@
 <div class="cart">
   <h1>Mon Panier</h1>
-
-  <!-- Affiche un message si le panier est vide -->
-  <div *ngIf="cartItems.length === 0">
-    <p>Votre panier est vide.</p>
-  </div>
-
-  <!-- Liste les articles du panier -->
-  <div *ngIf="cartItems.length > 0">
-    <div *ngFor="let item of cartItems" class="cart-item">
-      <img [src]="item.image" alt="{{ item.name }}" class="product-image" />
-      <h2>{{ item.name }}</h2>
-      <p>Prix unitaire : {{ item.price }} €</p>
-      <p>Quantité : 
-        <button (click)="decreaseQuantity(item)">-</button>
-        {{ item.quantity }}
-        <button (click)="increaseQuantity(item)">+</button>
-      </p>
-      <p>Sous-total : {{ item.price * item.quantity }} €</p>
+  <div *ngIf="cartItems.length > 0; else emptyCart">
+    <div class="cart-item" *ngFor="let item of cartItems">
+      <img [src]="item.image" alt="{{ item.name }}" class="cart-item-image" />
+      <div class="cart-item-details">
+        <h3>{{ item.name }}</h3>
+        <p>Prix : {{ item.price }} €</p>
+        <div class="quantity-controls">
+          <button (click)="decreaseQuantity(item)">-</button>
+          <span>{{ item.quantity }}</span>
+          <button (click)="increaseQuantity(item)">+</button>
+        </div>
+        <button class="remove-button" (click)="removeItem(item)">Supprimer</button>
+      </div>
     </div>
-
-    <!-- Affiche le total -->
     <div class="cart-total">
-      <h3>Total : {{ getTotalPrice() }} €</h3>
+      <h2>Total : {{ getTotalPrice() }} €</h2>
     </div>
   </div>
+  <ng-template #emptyCart>
+    <p>Votre panier est vide.</p>
+  </ng-template>
+</div>
+
+<!-- Bouton de déconnexion -->
+<div>
+  <button (click)="logout()">Se déconnecter</button>
+</div>
+<div>
+  <button (click)="navigateToOrderHistory()">Voir l'historique des commandes</button>
+</div>
+<!-- Bouton pour finaliser la commande -->
+<div class="finalize-order">
+  <button (click)="finalizeOrder()">Finaliser la commande</button>
 </div>

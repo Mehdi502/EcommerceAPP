@@ -1,16 +1,26 @@
-import { TestBed } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
 
-import { CartServiceService } from './cart-service.service';
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private isAuthenticated = false;
 
-describe('CartServiceService', () => {
-  let service: CartServiceService;
+  login(username: string, password: string): boolean {
+    // Simule une authentification
+    if (username === 'admin' && password === 'password') {
+      this.isAuthenticated = true;
+      return true;
+    }
+    return false;
+  }
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(CartServiceService);
-  });
+  logout(): void {
+    this.isAuthenticated = false;
+  }
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  isLoggedIn(): boolean {
+    return this.isAuthenticated;
+  }
+  
+}

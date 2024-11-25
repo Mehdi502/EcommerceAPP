@@ -1,1 +1,23 @@
-<p>login-component works!</p>
+<div class="login-container">
+    <h2>Connexion</h2>
+  
+    <!-- Formulaire de connexion -->
+    <form (ngSubmit)="login()">
+      <div>
+        <label for="username">Nom d'utilisateur</label>
+        <input type="text" id="username" [(ngModel)]="username" name="username" required>
+      </div>
+      <div>
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" required>
+      </div>
+      
+      <!-- Afficher le message d'erreur si les identifiants sont incorrects -->
+      <div *ngIf="loginError" class="error-message">
+        {{ loginError }}
+      </div>
+  
+      <button type="submit">Se connecter</button>
+    </form>
+  </div>
+  
